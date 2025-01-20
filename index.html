@@ -35,8 +35,10 @@
 
         // Function to Auto-Fill IP & Device Info in Cognito Form
         async function autoFillCognitoForm() {
-            const ipAddress = await getIPAddress();
-            const deviceInfo = getDeviceInfo();
+            // const ipAddress = await getIPAddress();
+            // const deviceInfo = getDeviceInfo();
+            const ipAddress = "000.000.000";
+            const deviceInfo = "qwerty123456asdfgh";
 
             // Wait for Cognito Forms to load (using Cognito's API)
             window.addEventListener("message", (event) => {

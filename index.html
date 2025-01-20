@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cognito Form with IP & Device Info</title>
+</head>
+<body>
+    <h2>Lottery Entry Form</h2>
+    
+    <!-- Embed Cognito Form Here -->
+    <iframe src="https://www.cognitoforms.com/forms/YOUR_FORM_URL" style="width:100%; height:800px;"></iframe>
+    
+    <script>
+        // Function to Get User's IP Address
+        function getIPAddress() {
+            return fetch('https://api64.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => data.ip)
+                .catch(error => console.error("Error fetching IP:", error));
+        }
+
+        // Function to Get Device Info
+        function getDeviceInfo() {
+            return navigator.userAgent;
+        }
+
+        // Auto-Fill IP & Device Info in Cognito Forms
+        async function autoFillCognitoForm() {
+            const ipAddress = await getIPAddress();
+            const deviceInfo = getDeviceInfo();
+
+            // Wait for Cognito Form to Load
+            setTimeout(() => {
+                const iframe = document.querySelector('iframe');
+                if (iframe) {
+                    const formDocument = iframe.contentDocument || iframe.contentWindow.document;
+                    
+                    // Find the Hidden Input Fields for IP & Device Info
+                    const ipField = formDocument.querySelector('[name="IPAddress"]');
+                    const deviceField = formDocument.querySelector('[name="DeviceInfo"]');
+
+                    if (ipField) ipField.value = ipAddress;
+                    if (deviceField) deviceField.value = deviceInfo;
+                }
+            }, 3000); // Wait for form to load
+        }
+
+        // Run Auto-Fill on Page Load
+        window.onload = autoFillCognitoForm;
+    </script>
+</body>
+</html>
